@@ -1,2 +1,6 @@
 2025-11-01-axiom-of-choice.md
 
+*.aux
+*.log
+*.gz
+*.toc
