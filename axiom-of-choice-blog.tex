@@ -9,6 +9,7 @@
 \usepackage{fancyhdr}
 \usepackage{ragged2e}
 \usepackage{titling}
+\usepackage{hyperref}
 
 % \usepackage{fontspec}
 % \usepackage{unicode-math}
@@ -125,7 +126,7 @@ Instead of throwing the definitions and theorems straight at your face, we first
     \item Is it true that the Cartesian product of any nonempty collection of nonempty sets is nonempty?
 \end{enumerate}
 
-For the first question, you may say that hey you are just too stupid. We can construct an infinite sequence $\{x_n\}_{n\in\N}\subseteq X$ by the following. Take $x_0\in X$. Inductively, after $\{x_n\}_{n\leq m}$ is fixed, take $x_{m+1}\in X\backslash\{x_n\}_{n\leq m}$ because $X$ is infinite. But you only proved by induction (recall what induction means) that for any $n\in\N$ there exists a (finite) sequence of length $n$ in $X$, rather than an infinite one. A correct proof (of course the proposition is true) is given below using the axiom of choice; you can scroll down if you are really curious.
+For the first question, you may say that hey you are just too stupid. We can construct an infinite sequence $\{x_n\}_{n\in\N}\subseteq X$ by the following. Take $x_0\in X$. Inductively, after $\{x_n\}_{n\leq m}$ is fixed, take $x_{m+1}\in X\backslash\{x_n\}_{n\leq m}$ because $X$ is infinite. But you only proved by induction (recall what induction means) that for any $n\in\N$ there exists a (finite) injective sequence of length $n$ in $X$, rather than an infinite one. A correct proof (of course the proposition is true) is given below using the axiom of choice; you can scroll down if you are really curious.
 
 For the second question, we first make precise the notion of the Cartesian product of an arbitrary collection of sets.
 
@@ -201,7 +202,7 @@ So $f(T)$ selects an upper bound of the chain $T$, and $g(x)$ selects an element
 Define $h:\mathcal T\to P$ by $h=g\circ f$. This function assigns to each chain an upper bound outside the chain.
 
 \begin{rmks}
-    The following steps require some knowledge of ordinals and transfinite recursion. One can refer to Chapter 2 of \textit{Set Theory} by Thomas Jech. I personally think the chapter on ordinals is very difficult, but Qinxiang Cao told me it is very easy!
+    The following steps require some knowledge of ordinals and transfinite recursion. One can refer to Chapter 2 of \textit{Set Theory} by Thomas Jech.\footnote{I personally think the chapter on ordinals is very difficult, but Qinxiang Cao told me it is very easy!}
 \end{rmks}
 
 Define a sequence $\abra{a_\alpha:\alpha\in\ord}$ by transfinite recursion:
@@ -386,6 +387,7 @@ By Zorn's lemma, $P$ has a maximal element, namely a maximal subgroup.
 
 \newpage
 \section*{Afterword}
+\addcontentsline{toc}{section}{Afterword}
 It is quite a surprise that I wrote so many words in a single day. In fact, I started writing this blog at midnight on November 1, 2025, and finished the main part by 6 p.m. the same day, writing more than 3,000 words.
 
 I have always found set theory quite an interesting subject (as has one of my good friends). Set theory and manifold theory are probably the two branches of mathematics I find the most appealing. However, both subjects are very abstract and obscure (at least to me), and it takes an unacceptably large amount of time (for a sophomore in AI) to study even the basics of them. Due to the absence of a textbook suitable for my level, and perhaps also to my lack of mathematical maturity, I sadly gave up studying set theory half a year ago. Now I am trying to read \textit{An Introduction to Manifolds} by Loring W. Tu, a first-year graduate-level textbook on manifold theory that assumes only one year of real analysis and a semester of abstract algebra. It takes me a great amount of time --- often spending half a day for less than 10 pages. I have no idea if this is a wrong choice, but wish me good luck.
