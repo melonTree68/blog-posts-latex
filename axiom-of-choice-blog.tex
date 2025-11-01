@@ -228,7 +228,7 @@ be a chain in $P$. The following steps lead to that $\bigcup T$ is an upper boun
     \item $\bigcup T$ is an upper bound of $T$.
 \end{enumerate}
 
-By Zorn's lemma, $P$ has a maximal element $\tilde f:\tilde X\to U$. If $\tilde X=X$ then $\tilde f$ is a choice function we seek. Otherwise take $S\in X\backslash\tilde X$ and $x\in S$, and $\bra{\tilde f\cup\{(S,x)\}}\in P$ contradicts the maximality of $\tilde f$. The proof is completed.
+By Zorn's lemma, $P$ has a maximal element $\overline f:\overline X\to U$. If $\overline X=X$ then $\overline f$ is a choice function we seek. Otherwise take $S\in X\backslash\overline X$ and $x\in S$, and $(\overline f\cup\{(S,x)\})\in P$ contradicts the maximality of $\overline f$. The proof is completed.
 
 \subsection{Zorn's lemma implies the well-ordering theorem}
 This proof is essentially the same as the proof that Zorn's lemma implies AC. Suppose $X$ is a nonempty set (if it is empty the desired result holds trivially).
@@ -261,7 +261,7 @@ If you prefer something more formal, we can make $\phi$ a function on the univer
 \[\phi(S,s,X)=((S\in X\land s\in S\land\forall x(x\in S\to s\leq x))\lor(S\not\in X\land s=\emptyset)).\]
 
 \begin{rmk}
-    We cannot give a well-order to every set in $X$ because that requires many choices (one choice for each set in $X$), which per se requires the axiom of choice. Our approach requires only one choice, namely choosing a well-order on $\bigcup X$.
+    We cannot give a well-order to every set in $X$ because that requires many choices (one choice of well-order for each set in $X$), which per se requires the axiom of choice. Our approach requires only one choice, namely choosing a well-order on $\bigcup X$.
 \end{rmk}
 
 
