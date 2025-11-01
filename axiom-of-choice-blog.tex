@@ -49,6 +49,10 @@
 \newtheorem{conj}[thm]{Conjecture}
 \newtheorem{quest}[thm]{Question}
 
+\newtheorem*{ac}{The Axiom of Choice (AC)}
+\newtheorem*{zorn}{Zorn's Lemma}
+\newtheorem*{wo}{The Well-Ordering Theorem}
+
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
 \newtheorem{defns}[thm]{Definitions}
@@ -93,15 +97,14 @@ What is the mysterious axiom of choice? Why the hell do we need it even just to 
 \tableofcontents
 \newpage
 
-
 \begin{quote}
-    To choose one sock from each of infinitely many pairs of socks requires the Axiom of Choice, but for shoes the Axiom is not needed.
+    To choose one sock from each of infinitely many pairs of socks requires the Axiom of Choice, but for shoes the Axiom is not needed.\footnote{The axiom of choice is needed only when we cannot give an explicit way to make the selection.}
 
     \hfill --- Bertrand Russell
 \end{quote}
 
 \begin{quote}
-    The Axiom of Choice is obviously true; the well-ordering principle is obviously false; and who can tell about Zorn's lemma?
+    The Axiom of Choice is obviously true; the well-ordering principle is obviously false; and who can tell about Zorn's lemma?\footnote{This is a joke. Although the three are mathematically equivalent, many mathematicians find the axiom of choice intuitive, the well-ordering principle counterintuitive, and Zorn's lemma too complex for any intuition. I have the same feeling. :)}
 
     \hfill --- Jerry Bona
 \end{quote}
@@ -113,8 +116,60 @@ What is the mysterious axiom of choice? Why the hell do we need it even just to 
 \end{quote}
 
 
-
 \section{Introduction}
+Instead of throwing the definitions and theorems straight at your face, we first raise some seemingly trivial but somewhat interesting questions.
+
+\begin{enumerate}
+    \item Is it true that every infinite set has a countable (countably infinite) subset?
+    \item Is it true that the Cartesian product of any nonempty collection of nonempty sets is nonempty?
+\end{enumerate}
+
+For the first question, you may say that hey you are just too stupid. We can construct an infinite sequence $\{x_n\}_{n\in\N}\subseteq X$ by the following. Take $x_0\in X$. Inductively, after $\{x_n\}_{n\leq m}$ is fixed, take $x_{m+1}\in X\backslash\{x_n\}_{n\leq m}$ because $X$ is infinite. But you only proved by induction (recall what induction means) that for any $n\in\N$ there exists a (finite) sequence of length $n$ in $X$, rather than an infinite one. A correct proof (of course the proposition is true) is given below using the axiom of choice; you can scroll down if you are really curious.
+
+For the second question, we first make precise the notion of the Cartesian product of an arbitrary collection of sets.
+
+\begin{defn}
+    Suppose $I$ is an index set and $\mathcal A=\{A_i:i\in I\}$ is a collection of nonempty sets. The Cartesian product of $\{A_i:i\in I\}$ is defined as
+    \[\prod_{i\in I}A_i=\cbra{(f:I\to\bigcup\mathcal A):f(i)\in A_i,\forall i\in I}.\]
+\end{defn}
+
+If $I=\emptyset$ or $\emptyset\in\mathcal A$ then the Cartesian product is certainly empty. Otherwise, that $\prod_i A_i\neq\emptyset$ is equivalent to the existence of an $f:I\to\bigcup\mathcal A$ with $f(i)\in A_i$ for each $i$, called a \emph{choice function}. This is precisely what the axiom of choice says!
+
+\begin{defn}
+    Let $I$ be an index set and $\mathcal A=\{A_i:i\in I\}$ be a collection of sets indexed by $I$. A choice function on $\mathcal A$ is a function $f:I\to\bigcup\mathcal A$ such that $f(i)\in A_i$ for each $i\in I$. Note that a set $X$ can always be indexed by itself: $X=\{x:x\in X\}$, so a choice function on $X$ is a function $f:X\to\bigcup X$ such that $f(S)\in S$ for each $S\in X$.
+\end{defn}
+
+\begin{ac}
+    Any set of nonempty sets has a choice function. Equivalently, the Cartesian product of any nonempty collection of nonempty sets is nonempty.
+\end{ac}
+
+\begin{rmk}
+    The axiom of choice (``C''), together with Zermelo-Fraenkel (``ZF'') set theory, constitutes the standard form\footnote{There are other models, some of which hair-raising. Set theorists are definitely no human.} of axiomatic set theory (ZFC), the most common foundation of mathematics. AC is independent of ZF in the sense that if ZF is consistent (this is unknown\footnote{It follows from Gödel's second incompleteness theorem that ZF cannot prove its own consistency unless it is actually inconsistent.}), then so is ZFC; and if ZF is consistent, then so is ZF with the negation of AC.
+\end{rmk}
+
+Enough of those confusing words about axiomatic set theory. Next we give two equivalent formulations of AC (Zorn's lemma and the well-ordering theorem) and prove their equivalence. After that, we present some interesting and perhaps surprising consequences. For readers' convenience, we here list the results that will be covered, and state Zorn's lemma and the well-ordering theorem.
+
+\begin{rmk}
+    If you are not at all interested in the proofs of the equivalence of the three formulations, you can totally skip them all without hindering the understanding of the interesting and perhaps surprising results about the axiom of choice.
+\end{rmk}
+
+Results that will be covered (in the following order, without any interdependence):
+
+\begin{enumerate}
+    \item (Done) The Cartesian product of any nonempty collection of nonempty sets is nonempty.
+    \item Every infinite set has a countable subset.
+    \item Every vector space has a basis.
+    \item There does not exist a perfect generalization of the length of an interval to all subsets of $\R$. (We will make that notion precise.)
+    \item Every nontrivial finitely generated group possesses maximal subgroups.
+\end{enumerate}
+
+\begin{zorn}
+    If $P$ is a nonempty partially ordered set (poset) in which every chain has an upper bound, then $P$ has a maximal element.
+\end{zorn}
+
+\begin{wo}
+    Every set can be well-ordered, i.e., totally ordered such that every nonempty subset has a least element.
+\end{wo}
 
 
 \section{Equivalence of the Three Formulations}
@@ -130,13 +185,13 @@ What is the mysterious axiom of choice? Why the hell do we need it even just to 
 
 
 \section{Consequences of the Axiom of Choice}
-\subsection{Every infinite set has a countable subset.}
+\subsection{Every infinite set has a countable subset}
 
-\subsection{Every vector space has a basis.}
+\subsection{Every vector space has a basis}
 
-\subsection{There does not exist a perfect generalization of the length of an interval to all subsets of $\R$.}
+\subsection{There does not exist a perfect generalization of the length of an interval to all subsets of $\R$}
 
-\subsection{Every nontrivial finitely generated group possesses maximal subgroups.}
+\subsection{Every nontrivial finitely generated group possesses maximal subgroups}
 
 
 \section{Afterword}
