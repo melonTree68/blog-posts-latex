@@ -149,7 +149,7 @@ The surprisal has some intuitive and desirable properties.
 \begin{defn}
     The (Shannon) entropy of a random variable $X$, denoted $\H(p)$, is defined as the average surprisal we experience when drawing samples from it.
     \[\H(p)=\E_{x\sim p}[\I(x)]=-\sum_{x\in\X}p(x)\log p(x)\]
-    (or $-\int p(x)\log p(x)\d x$ for continuous distributions, called the differential entropy).
+    (or $-\int p\log p$ for continuous distributions, called the differential entropy).
 \end{defn}
 
 Entropy measures the uncertainty inherent in a distribution. Indeed, the greater the entropy, the more surprisal we will experience (in terms of expectation) when sampling from it. Next we discuss what distributions extremize the entropy.
@@ -161,22 +161,37 @@ Observe that the entropy is always nonnegative. Hence when the probability mass 
 \[\L(y,\lambda)=-\sum_{i=1}^{n}y_i\log y_i+\lambda\bra{\sum_{i=1}^{n}y_i-1}.\]
 The only stationary point is $y_1=\dots=y_n$, and the Hessian of the Lagrangian here is negative definite. Hence a uniform distribution maximizes the entropy (maximum $\log n$).
 
-\paragraph{Continuous case, maximum}
-
-
 \paragraph{Continuous case, minimum}
-When $X\sim U[a,b]$, $\H(p)=\log(b-a)$. Hence $\H(p)\to-\infty$ when $b-a\to0$. There is no minimum. But we can show that 
+When $X\sim U(a,b)$, $\H(p)=\log(b-a)$. Hence $\H(p)\to-\infty$ when $b-a\to0$. There is no minimum.
 
+\paragraph{Continuous case, maximum}
+Suppose that the PDF $f(x)=0$ when $x\not\in[a,b]$. Similar to the proof of the discrete case, variational calculus (the Euler-Lagrange equation) leads to that a uniform distribution maximizes the (differential) entropy. Here we give a cleaner proof using the nonnegativity of the KL divergence (see \ref{subsec: kldiv properties}).
+
+Let $u$ be the PDF of $U(a,b)$.
+\[0\le\KL{f}{u}=\int_a^b f\log f-\int_a^b f\log u=-\H(f)+\log(b-a).\]
+Hence $\H(f)\le\log(b-a)$. The inequality is an equality if and only if $f=u$ a.e.
 
 \subsection{Cross-Entropy}
+In the context of machine learning, we often approximate an unknown, underlying true distribution $p$ with a model $q$. Suppose we again want to measure the expected surprisal when sampling from the distribution. Samples are still drawn from $p$, but this time we can only measure surprisal with our known, approximating distribution $q$.
 
+\begin{defn}
+    The cross entropy, denoted $\H(p,q)$, is the average surprisal experienced when samples are drawn from $p$, but surprisal is measured via $q$.
+    \[\H(p,q)=\E_{x\sim p}[-\log q(x)]=-\sum_{x\in\X}p(x)\log q(x)\]
+    (or $-\int p\log q$ for continuous distributions).
+\end{defn}
 
 
 \section{Kullback-Leibler Divergence}
 \subsection{Motivation and Definition}
+How much extra surprisal do we get by using our incorrect model $q$ instead of the true distribution $p$?
+
+\begin{defn}
+    The Kullback-Leibler (KL) divergence from $q$ to $p$, denoted $\KL pq$, is the difference between the cross entropy and the entropy.
+\end{defn}
 
 
 \subsection{Properties}
+\label{subsec: kldiv properties}
 
 
 \subsection{An Information-Theoretic Perspective}
