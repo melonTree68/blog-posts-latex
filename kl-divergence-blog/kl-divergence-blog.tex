@@ -149,7 +149,7 @@ The surprisal has some intuitive and desirable properties.
 \begin{defn}
     The (Shannon) entropy of a random variable $X$, denoted $\H(p)$, is defined as the average surprisal we experience when drawing samples from it.
     \[\H(p)=\E_{x\sim p}[\I(x)]=-\sum_{x\in\X}p(x)\log p(x)\]
-    (or $-\int p\log p$ for continuous distributions, called the differential entropy).
+    (or $-\int p\log p$ for continuous distributions, called the differential entropy\footnote{In what follows, the definitions for continuous random variables apply mutatis mutandis.}).
 \end{defn}
 
 Entropy measures the uncertainty inherent in a distribution. Indeed, the greater the entropy, the more surprisal we will experience (in terms of expectation) when sampling from it. Next we discuss what distributions extremize the entropy.
@@ -169,34 +169,43 @@ Suppose that the PDF $f(x)=0$ when $x\not\in[a,b]$. Similar to the proof of the 
 
 Let $u$ be the PDF of $U(a,b)$.
 \[0\le\KL{f}{u}=\int_a^b f\log f-\int_a^b f\log u=-\H(f)+\log(b-a).\]
-Hence $\H(f)\le\log(b-a)$. The inequality is an equality if and only if $f=u$ a.e.
+Hence $\H(f)\le\log(b-a)$. Equality holds if and only if $f=u$ a.e.\footnote{a.e. stands for almost everywhere.}
 
 \subsection{Cross-Entropy}
 In the context of machine learning, we often approximate an unknown, underlying true distribution $p$ with a model $q$. Suppose we again want to measure the expected surprisal when sampling from the distribution. Samples are still drawn from $p$, but this time we can only measure surprisal with our known, approximating distribution $q$.
 
 \begin{defn}
-    The cross entropy, denoted $\H(p,q)$, is the average surprisal experienced when samples are drawn from $p$, but surprisal is measured via $q$.
-    \[\H(p,q)=\E_{x\sim p}[-\log q(x)]=-\sum_{x\in\X}p(x)\log q(x)\]
-    (or $-\int p\log q$ for continuous distributions).
+    The cross-entropy, denoted $\H(p,q)$, is the average surprisal experienced when samples are drawn from $p$, but surprisal is measured via $q$.
+    \[\H(p,q)=\E_{x\sim p}[-\log q(x)]=-\sum_{x\in\X}p(x)\log q(x).\]
 \end{defn}
 
 
 \section{Kullback-Leibler Divergence}
 \subsection{Motivation and Definition}
-How much extra surprisal do we get by using our incorrect model $q$ instead of the true distribution $p$?
+How much extra surprisal do we get by using our incorrect model $q$ instead of the truth $p$?
 
 \begin{defn}
-    The Kullback-Leibler (KL) divergence from $q$ to $p$, denoted $\KL pq$, is the difference between the cross entropy and the entropy.
+    The Kullback-Leibler (KL) divergence from $q$ to $p$, denoted $\KL pq$, is the difference between the cross-entropy and the entropy.
+    \[\KL pq=\H(p,q)-\H(p)=\sum_{x\in\X}p(x)\log\frac{p(x)}{q(x)}.\]
 \end{defn}
 
 
 \subsection{Properties}
 \label{subsec: kldiv properties}
+\begin{thm}
+    $\KL pq\ge0$. Equality holds if and only if $p=q$ a.e.
+\end{thm}
+\begin{proof}
+    We prove the discrete case using Jensen's inequality; the continuous case holds mutatis mutandis. Notice that $p(x)\ge0$ and $\sum_{x\in\X}p(x)=1$. Because $\log$ is concave, by Jensen's inequality
+    \[\KL pq=-\sum_{x\in\X}p(x)\log\frac{q(x)}{p(x)}\ge-\log\sum_{x\in\X}p(x)\frac{q(x)}{p(x)}=0.\]
+    The condition for equality follows from that of Jensen's inequality.
+\end{proof}
 
+The KL divergence is asymmetric: $\KL pq\ne\KL qp$ generally.
 
 \subsection{An Information-Theoretic Perspective}
 \label{subsec: information-theoretic}
-
+The KL divergence quantifies the ``inefficiency'' in using distribution $q$ to represent the truth $p$.
 
 
 
