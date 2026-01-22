@@ -1,0 +1,188 @@
+% xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{geometry}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage[dvipsnames,svgnames]{xcolor}
+\usepackage{enumerate}
+\usepackage[inline]{enumitem}
+\usepackage{fancyhdr}
+\usepackage{ragged2e}
+\usepackage{titling}
+\usepackage{hyperref}
+
+
+% ---------- Preamble ----------
+\pagestyle{fancyplain} % Make all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header
+\fancyfoot[L]{}
+\fancyfoot[C]{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\geometry{
+    textwidth=160mm,
+    top=25mm,
+    bottom=25mm,
+}
+\setlist[enumerate]{
+    label=\textnormal{(\arabic*)},
+    topsep=0.5em,
+    itemsep=0em,
+}
+\setlist[itemize]{
+    topsep=0.5em,
+    itemsep=0em,
+}
+
+
+% ---------- Theorem environments ----------
+\theoremstyle{plain} % default
+\newtheorem{thm}{Theorem}
+\newtheorem{thms}[thm]{Theorems}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{props}[thm]{Propositions}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Question}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+\newtheorem*{rmks}{Remarks}
+
+
+% ---------- Symbol Macros ----------
+\newcommand{\bra}[1]{\mathopen{}\left(#1\right)}
+\newcommand{\sbra}[1]{\mathopen{}\left[#1\right]}
+\newcommand{\cbra}[1]{\mathopen{}\left\{#1\right\}}
+\newcommand{\abra}[1]{\mathopen{}\left\langle#1\right\rangle}
+\newcommand{\norm}[1]{\mathopen{}\left\lVert#1\right\rVert}
+\newcommand{\inp}[2]{\mathopen{}\left\langle#1,#2\right\rangle}
+\newcommand{\abs}[1]{\mathopen{}\left|#1\right|}
+\newcommand{\rest}[2]{\mathopen{}\left.#1\right|_{#2}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+% \newcommand{\R}{\mathbf{R}}
+% \newcommand{\N}{\mathbf{N}}
+% \newcommand{\Z}{\mathbf{Z}}
+% \newcommand{\C}{\mathbf{C}}
+% \newcommand{\Q}{\mathbf{Q}}
+
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\dx}{\mathrm{d}x}
+% \renewcommand{\epsilon}{\varepsilon}
+% \renewcommand{\phi}{\varphi}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathcal{P}}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\ord}{\mathrm{Ord}}
+
+\newcommand{\T}{\mathrm{T}}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\I}{\mathrm{I}}
+\renewcommand{\H}{\mathrm{H}}
+\newcommand{\KL}[2]{D_{\text{KL}}(#1\parallel#2)}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+
+
+% ---------- Title Section ----------
+\title{
+    Information Theory Behind the Kullback-Leibler Divergence
+}
+\author{Zhijie Chen}
+
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+Why do we use the Kullback-Leibler (KL) divergence as a measure of distance between probability distributions? Why do we use the cross-entropy loss function in supervised machine learning?
+
+\tableofcontents
+\newpage
+
+
+\section{Introduction}
+In supervised learning, we typically assume that the training set $\D=\{(x^{(i)},y^{(i)})\}_{i=1}^N$ is sampled from an underlying true distribution $p$, and our goal is to construct a model $q_\theta$, parameterized by $\theta$, that approximates this distribution. To evaluate our model, we need a measure of distance, or dissimilarity, between two probability distributions. A standard choice is the Kullback-Leibler (KL) divergence
+\[\KL p q=\E_{x\sim p}\sbra{\log\frac{p(x)}{q(x)}}=\sum_{x\in\X}p(x)\log\frac{p(x)}{q(x)}\]
+(or $\int p(x)\log\frac{p(x)}{q(x)}\dx$ for continuous random variables). In practice, we often use the cross-entropy loss\footnote{The cross-entropy loss has the same form as the maximum likelihood estimation objective.}
+\[J(\theta)=-\frac1N\sum_{i=1}^{N}\log q_\theta(x^{(i)},y^{(i)}).\]
+
+But why do they work? The definitions above are not quite self-explanatory --- it is not immediately clear from their forms why the KL divergence measures the distance between two distributions, or why minimizing the cross-entropy loss leads to better model performance. To answer this, we begin with the notion of surprisal.
+
+
+\section{Surprisal}
+Consider a random variable $X$ with a discrete probability distribution $p(x)$. If we observe an outcome $x$, how surprised are we? Intuitively, the higher the probability of an event, the less surprised we are, and correspondingly the less information we gain from its occurrence. Conversely, events with low probability are more surprising and provide more information. This motivates the definition of information content, or self-information, or surprisal, of an event.
+
+\begin{defn}
+    The information content, self-information, or surprisal of an event $x$ is defined as
+    \[\I(x)=-\log p(x).\]
+    Here the choice of base $b$ is somewhat arbitrary. Different choices of $b$ correspond to different units of information: bit for $b=2$, nat (for natural) for $b=e$, and Hart (for hartley) for $b=10$.
+\end{defn}
+
+In this article, we shall primarily be treating the concept above as surprisal, instead of the less intuitive notion of information content. The latter notion is also important and will be treated in \ref{subsec: information-theoretic}.
+
+The surprisal has some intuitive and desirable properties.
+\begin{itemize}
+    \item $\I(x)=0$ for $x$ with $p(x)=1$. We are completely unsurprised at events with probability $1$. Such events carry no information.
+    \item $\I(x)$ is a monotonically decreasing function of $p(x)$.
+    \item For independent events $x$ and $y$, $\I(x,y)=\I(x)\I(y)$. The information content of two independent events is the sum of their individual self-information; the surprisal of two independent events is the sum of their individual surprisals.
+\end{itemize}
+
+
+\section{Entropy and Cross-Entropy}
+\subsection{Entropy}
+\begin{defn}
+    The (Shannon) entropy of a random variable $X$, denoted $\H(p)$, is defined as the average surprisal we experience when drawing samples from it.
+    \[\H(p)=\E_{x\sim p}[\I(x)]=-\sum_{x\in\X}p(x)\log p(x)\]
+    (or $-\int p(x)\log p(x)\d x$ for continuous distributions, called the differential entropy).
+\end{defn}
+
+Entropy measures the uncertainty inherent in a distribution. Indeed, the greater the entropy, the more surprisal we will experience (in terms of expectation) when sampling from it. Next we discuss what distributions extremize the entropy.
+
+\paragraph{Discrete case, minimum}
+Observe that the entropy is always nonnegative. Hence when the probability mass is concentrated at a single point, the entropy attains its minimum, $0$.
+
+\paragraph{Discrete case, maximum} We use Lagrange multipliers. Without loss of generality, suppose that $\X=\{1,2,\dots,n\}$. Let $y=(y_1,\dots,y_n)=(p(1),\dots,p(n))$. The Lagrangian
+\[\L(y,\lambda)=-\sum_{i=1}^{n}y_i\log y_i+\lambda\bra{\sum_{i=1}^{n}y_i-1}.\]
+The only stationary point is $y_1=\dots=y_n$, and the Hessian of the Lagrangian here is negative definite. Hence a uniform distribution maximizes the entropy (maximum $\log n$).
+
+\paragraph{Continuous case, maximum}
+
+
+\paragraph{Continuous case, minimum}
+When $X\sim U[a,b]$, $\H(p)=\log(b-a)$. Hence $\H(p)\to-\infty$ when $b-a\to0$. There is no minimum. But we can show that 
+
+
+\subsection{Cross-Entropy}
+
+
+
+\section{Kullback-Leibler Divergence}
+\subsection{Motivation and Definition}
+
+
+\subsection{Properties}
+
+
+\subsection{An Information-Theoretic Perspective}
+\label{subsec: information-theoretic}
+
+
+
+
+\end{document}
