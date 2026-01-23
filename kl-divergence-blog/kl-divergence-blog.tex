@@ -117,6 +117,7 @@ Why do we use the Kullback-Leibler (KL) divergence as a measure of distance betw
 
 
 \section{Introduction}
+\label{sec: intro}
 In supervised learning, we typically assume that the training set $\D=\{(x^{(i)},y^{(i)})\}_{i=1}^N$ is sampled from an underlying true distribution $p$, and our goal is to construct a model $q_\theta$, parameterized by $\theta$, that approximates this distribution. To evaluate our model, we need a measure of distance, or dissimilarity, between two probability distributions. A standard choice is the Kullback-Leibler (KL) divergence
 \[\KL p q=\E_{x\sim p}\sbra{\log\frac{p(x)}{q(x)}}=\sum_{x\in\X}p(x)\log\frac{p(x)}{q(x)}\]
 (or $\int p(x)\log\frac{p(x)}{q(x)}\dx$ for continuous random variables). In practice, we often use the cross-entropy loss\footnote{The cross-entropy loss has the same form as the maximum likelihood estimation objective.}
@@ -181,6 +182,7 @@ In the context of machine learning, we often approximate an unknown, underlying 
 
 
 \section{Kullback-Leibler Divergence}
+\label{sec: kl}
 \subsection{Motivation and Definition}
 How much extra surprisal do we get by using our incorrect model $q$ instead of the truth $p$?
 
@@ -228,7 +230,20 @@ We see that the entropy is the average number of bits required per message when 
 
 
 \section{The Machine Learning Perspective}
+Now the answers to the questions raised in \ref{sec: intro} are clear.
+\begin{enumerate}
+    \item Why do we use the KL divergence as a measure of distance between distributions?
+    
+    The answer is clear from \ref{sec: kl} and \ref{sec: information}.
 
+    \item Why do we use the cross-entropy as the loss function in machine learning (classification problems in particular)?
+
+    To measure the dissimilarity between the data's underlying distribution $p$ and our model $q_\theta$, we use the KL divergence. Minimizing $\KL p{q_\theta}=\H(p,q_\theta)-\H(p)$ is equivalent to minimizing $\H(p,q_\theta)$ because $p$ does not depend on $\theta$.
+
+    One might further ask that the cross-entropy $\H(p,q_\theta)=-\sum_{x\in\X}p(x)\log q_\theta(x)$ looks different from the actual loss function we see in ML textbooks, and that how can we possibly calculate it without knowing the true distribution $p(x)$? The answer is we use the empirical distribution $\hat\D$, i.e., the uniform distribution over the training set $\{(x^{(i)},y^{(i)})\}_{i=1}^N$, to approximate $p$. The cross-entropy (loss)
+    \[J(\theta)=\H(\hat\D,q_\theta)=-\sum_{i=1}^{N}\frac1N\log q_\theta(x^{(i)},y^{(i)}).\]
+    This is the form familiar to us for long.
+\end{enumerate}
 
 
 \end{document}
