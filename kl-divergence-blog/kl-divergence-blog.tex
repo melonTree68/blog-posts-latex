@@ -134,7 +134,7 @@ Consider a random variable $X$ with a discrete probability distribution $p(x)$. 
     Here the choice of base $b$ is somewhat arbitrary. Different choices of $b$ correspond to different units of information: bit for $b=2$, nat (for natural) for $b=e$, and Hart (for hartley) for $b=10$.
 \end{defn}
 
-In this article, we shall primarily be treating the concept above as surprisal, instead of the less intuitive notion of information content. The latter notion is also important and will be treated in \ref{subsec: information-theoretic}.
+In this article, we shall primarily be treating the concept above as surprisal, instead of the less intuitive notion of information content. The latter notion is also important and will be treated in \ref{sec: information}.
 
 The surprisal has some intuitive and desirable properties.
 \begin{itemize}
@@ -172,7 +172,7 @@ Let $u$ be the PDF of $U(a,b)$.
 Hence $\H(f)\le\log(b-a)$. Equality holds if and only if $f=u$ a.e.\footnote{a.e. stands for almost everywhere.}
 
 \subsection{Cross-Entropy}
-In the context of machine learning, we often approximate an unknown, underlying true distribution $p$ with a model $q$. Suppose we again want to measure the expected surprisal when sampling from the distribution. Samples are still drawn from $p$, but this time we can only measure surprisal with our known, approximating distribution $q$.
+In the context of machine learning, we often approximate an unknown, underlying true distribution $p$ with a model $q$. Suppose we again want to measure the expected surprisal when sampling from the distribution. Samples are still drawn from the black box $p$, but this time we can only measure surprisal with our known, approximating distribution $q$.
 
 \begin{defn}
     The cross-entropy, denoted $\H(p,q)$, is the average surprisal experienced when samples are drawn from $p$, but surprisal is measured via $q$.
@@ -201,11 +201,33 @@ How much extra surprisal do we get by using our incorrect model $q$ instead of t
     The condition for equality follows from that of Jensen's inequality.
 \end{proof}
 
+\begin{cor}
+    $\H(p,q)\ge\H(p)=\H(p,p)$.
+\end{cor}
+
+Measuring surprisal using the true distribution yields least average surprisal. Any incorrect surprisal-measuring scheme incurs extra surprisal.
+
 The KL divergence is asymmetric: $\KL pq\ne\KL qp$ generally.
 
-\subsection{An Information-Theoretic Perspective}
-\label{subsec: information-theoretic}
-The KL divergence quantifies the ``inefficiency'' in using distribution $q$ to represent the truth $p$.
+
+\section{An Information-Theoretic Perspective}
+\label{sec: information}
+The KL divergence quantifies the ``inefficiency'' in using distribution $q$ to represent the truth $p$. Suppose we want to design a (binary) code (like Morse code or Huffman code) to transmit outcomes of a discrete random variable $X\sim p(x)$. To be efficient, we should assign shorter codewords to more probable outcomes and longer codewords to less probable ones.
+
+Shannon's source coding theorem implies that the theoretically optimal length of a codeword representing an outcome $x$ is $-\log p(x)$. In this subsection we use $2$ as the base of the logarithm because we are constructing a binary code.
+
+\paragraph{The optimal scenario}
+Suppose we know the true distribution $p$ and hence use it to construct the code. The expected length of a codeword is then
+\[\E_{x\sim p}[-\log p(x)]=\H(p).\]
+
+\paragraph{The suboptimal scenario}
+Now suppose we only have an approximating distribution $q$, and construct our code based on this false belief. The length of the codeword assigned to an outcome $x$ would then be $-\log q(x)$. The expected length of a codeword is therefore
+\[\E_{x\sim p}[-\log q(x)]=\H(p,q).\]
+
+We see that the entropy is the average number of bits required per message when using the most efficient code, and the cross-entropy is the average number of bits required per message when using an inefficient, suboptimal code based on the wrong distribution $q$. Therefore, the KL divergence $\KL pq=\H(p,q)-\H(p)\ge0$ is the average number of \emph{extra} bits required per message due to using the wrong distribution to optimize the code. This justifies the statement that the KL divergence quantifies the inefficiency in using distribution $q$ to represent $p$.
+
+
+\section{The Machine Learning Perspective}
 
 
 
